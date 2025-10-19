@@ -1,0 +1,269 @@
+/* ObsiCard Plugin Styles */
+
+/* Review Modal Styles */
+.obsicard-review-modal .modal {
+  width: 80%;
+  max-width: 800px;
+}
+
+.obsicard-review-modal .flashcard-list {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.obsicard-review-modal .flashcard-item {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+  background: var(--background-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.obsicard-review-modal .flashcard-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  border-color: var(--interactive-accent);
+}
+
+.obsicard-review-modal .flashcard-item.selected {
+  background: var(--background-secondary);
+  border-color: var(--interactive-accent);
+  border-width: 2px;
+  box-shadow: 0 0 0 2px var(--interactive-accent-hover);
+  opacity: 1;
+}
+
+.obsicard-review-modal .flashcard-item.unselected {
+  opacity: 0.6;
+}
+
+/* Ensure any drag handles are hidden in the review modal */
+.obsicard-review-modal .drag-handle,
+.obsicard-review-modal [draggable="true"] .drag-handle,
+.obsicard-review-modal .draggable,
+.obsicard-review-modal [draggable="true"],
+.obsicard-review-modal .flashcard-item .drag-handle,
+.obsicard-review-modal .flashcard-item::before,
+.obsicard-review-modal .flashcard-item::after {
+  display: none !important;
+  -webkit-user-drag: none;
+  user-select: none;
+  cursor: default;
+}
+
+/* Disable dragging on flashcard items */
+.obsicard-review-modal .flashcard-item {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  draggable: false;
+}
+
+/* Hide any potential drag handles from Obsidian's default styling */
+.obsicard-review-modal .flashcard-item * {
+  -webkit-user-drag: none;
+  user-drag: none;
+  draggable: false;
+}
+
+.obsicard-review-modal .card-front,
+.obsicard-review-modal .card-back,
+.obsicard-review-modal .card-tags {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.obsicard-review-modal .card-front strong,
+.obsicard-review-modal .card-back strong,
+.obsicard-review-modal .card-tags strong {
+  color: var(--text-normal);
+  font-weight: 600;
+}
+
+.obsicard-review-modal .card-tags {
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+/* Pre-Generation Modal Styles */
+.tag-suggestion-button {
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+}
+
+.tag-suggestion-button:hover {
+  background: var(--interactive-hover);
+  border-color: var(--interactive-accent);
+}
+
+.tag-suggestion-button:active {
+  transform: scale(0.95);
+}
+
+/* Button Containers */
+.button-container {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* Checkbox Styling */
+.obsicard-review-modal input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.obsicard-review-modal .checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.obsicard-review-modal .checkbox-container label {
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Edit Button */
+.obsicard-review-modal button.clickable-icon {
+  padding: 4px 12px;
+  font-size: 12px;
+  margin-top: 8px;
+  border-radius: 4px;
+  background: var(--interactive-normal);
+  border: 1px solid var(--background-modifier-border);
+  cursor: pointer;
+}
+
+.obsicard-review-modal button.clickable-icon:hover {
+  background: var(--interactive-hover);
+}
+
+/* Settings Tab Styles */
+.obsicard-settings h3 {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  color: var(--text-normal);
+  font-weight: 600;
+}
+
+.obsicard-settings .setting-item-description {
+  color: var(--text-muted);
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+/* Scrollbar Styling */
+.obsicard-review-modal .flashcard-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.obsicard-review-modal .flashcard-list::-webkit-scrollbar-track {
+  background: var(--background-secondary);
+  border-radius: 4px;
+}
+
+.obsicard-review-modal .flashcard-list::-webkit-scrollbar-thumb {
+  background: var(--background-modifier-border);
+  border-radius: 4px;
+}
+
+.obsicard-review-modal .flashcard-list::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Warning Message */
+.warning-message {
+  color: var(--text-error);
+  padding: 8px 12px;
+  margin-top: 8px;
+  border-radius: 4px;
+  background: var(--background-modifier-error);
+  font-size: 0.9em;
+}
+
+/* Selected Count Badge */
+#selected-count {
+  color: var(--text-muted);
+  font-size: 0.9em;
+  padding: 4px 8px;
+  background: var(--background-secondary);
+  border-radius: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .obsicard-review-modal .modal {
+    width: 95%;
+  }
+  
+  .obsicard-review-modal .flashcard-item {
+    padding: 12px;
+  }
+  
+  .button-container {
+    flex-direction: column;
+  }
+}
+
+/* Dark Theme Specific */
+.theme-dark .tag-suggestion-button {
+  background: var(--background-primary);
+}
+
+.theme-dark .obsicard-review-modal .flashcard-item {
+  border-color: var(--background-modifier-border-hover);
+}
+
+/* Light Theme Specific */
+.theme-light .obsicard-review-modal .flashcard-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.obsicard-review-modal .flashcard-item {
+  animation: slideIn 0.2s ease;
+}
+
+/* Loading State */
+.obsicard-loading {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--background-modifier-border);
+  border-top-color: var(--interactive-accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+

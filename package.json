@@ -1,0 +1,39 @@
+{
+  "name": "obsicard",
+  "version": "1.0.0",
+  "description": "AI-Powered Flashcard Generator for Obsidian",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
+  },
+  "keywords": [
+    "obsidian",
+    "plugin",
+    "flashcards",
+    "anki",
+    "ai",
+    "groq"
+  ],
+  "author": "Arda Erkan",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "builtin-modules": "^3.3.0",
+    "eslint": "^8.56.0",
+    "jsdom": "^23.0.0",
+    "obsidian": "^1.5.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10",
+    "vitest": "^1.1.0"
+  },
+  "dependencies": {}
+}
+
