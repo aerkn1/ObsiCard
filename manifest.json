@@ -4,8 +4,7 @@
   "version": "1.0.0",
   "minAppVersion": "1.5.0",
   "author": "Arda Erkan",
-  "description": "Generate AI-powered flashcards directly from your Obsidian notes and sync them seamlessly with Anki Desktop.",
-  "isDesktopOnly": true,
-  "js": "main.js"
+  "description": "AI-powered flashcard generator with optional Anki Desktop synchronization.",
+  "isDesktopOnly": true
 }
 
