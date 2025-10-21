@@ -48,6 +48,11 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       exclude: ['node_modules/', 'tests/', '*.config.ts']
     }
+  },
+  resolve: {
+    alias: {
+      'obsidian': path.resolve(__dirname, 'tests/mocks/obsidian.ts')
+    }
   }
 });
 

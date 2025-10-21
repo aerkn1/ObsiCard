@@ -267,3 +267,143 @@
   }
 }
 
+/* Pre-Generation Modal Styles */
+.obsicard-pregen-modal .modal {
+  width: 70%;
+  max-width: 600px;
+}
+
+.obsicard-pregen-modal .tags-container {
+  margin-bottom: 16px;
+}
+
+.obsicard-pregen-modal .tags-container input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+}
+
+.obsicard-pregen-modal .tag-suggestions {
+  margin-top: 16px;
+}
+
+.obsicard-pregen-modal .tag-suggestions .button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.obsicard-pregen-modal .button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+/* Review Modal Additional Styles */
+.obsicard-review-modal .review-header {
+  margin-bottom: 16px;
+}
+
+.obsicard-review-modal .select-controls {
+  margin-bottom: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.obsicard-review-modal .deck-name-container {
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  background: var(--background-secondary);
+}
+
+.obsicard-review-modal .deck-name-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.obsicard-review-modal .deck-name-container input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+}
+
+.obsicard-review-modal .button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.obsicard-review-modal .button-container .left-buttons,
+.obsicard-review-modal .button-container .right-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.obsicard-review-modal .button-container .right-buttons {
+  align-items: center;
+}
+
+.obsicard-review-modal #selected-count {
+  align-self: center;
+  margin-right: 8px;
+  color: var(--text-muted);
+}
+
+.obsicard-review-modal #approve-button.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+}
+
+.obsicard-review-modal #approve-button.is-disabled:hover {
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+}
+
+/* Edit Flashcard Modal */
+.obsicard-edit-modal .modal {
+  width: 60%;
+  max-width: 500px;
+}
+
+.obsicard-edit-modal textarea,
+.obsicard-edit-modal input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-family: inherit;
+}
+
+.obsicard-edit-modal textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.obsicard-edit-modal label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.obsicard-edit-modal .button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+

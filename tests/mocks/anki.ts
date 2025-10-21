@@ -32,8 +32,8 @@ export const mockConnectionError = {
   error: 'Connection failed'
 };
 
-export function createMockAnkiConnectFetch(response: any, shouldFail = false) {
-  return async (url: string, options?: any) => {
+export function createMockAnkiConnectFetch(response: unknown, shouldFail = false) {
+  return async (url: string, options?: RequestInit) => {
     if (shouldFail) {
       throw new Error('Connection refused');
     }
@@ -47,18 +47,18 @@ export function createMockAnkiConnectFetch(response: any, shouldFail = false) {
       status: 200,
       json: async () => response,
       text: async () => JSON.stringify(response)
-    };
+    } as Response;
   };
 }
 
 export function createMockAnkiConnectHandler() {
   const state = {
     decks: ['Default'],
-    notes: [] as any[]
+    notes: [] as unknown[]
   };
 
-  return async (url: string, options?: any) => {
-    const body = JSON.parse(options.body);
+  return async (url: string, options?: RequestInit) => {
+    const body = JSON.parse(options?.body as string);
     const action = body.action;
 
     switch (action) {

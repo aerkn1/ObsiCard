@@ -39,9 +39,6 @@ export class ReviewModal extends Modal {
 
     // Toggle select all / deselect all
     const selectControls = contentEl.createDiv('select-controls');
-    selectControls.style.marginBottom = '16px';
-    selectControls.style.display = 'flex';
-    selectControls.style.gap = '8px';
 
     const toggleSelectBtn = selectControls.createEl('button', { text: 'Select All' });
     toggleSelectBtn.addEventListener('click', () => {
@@ -58,30 +55,17 @@ export class ReviewModal extends Modal {
 
     // Deck name input
     const deckNameContainer = contentEl.createDiv('deck-name-container');
-    deckNameContainer.style.marginBottom = '16px';
-    deckNameContainer.style.padding = '12px';
-    deckNameContainer.style.border = '1px solid var(--background-modifier-border)';
-    deckNameContainer.style.borderRadius = '6px';
-    deckNameContainer.style.backgroundColor = 'var(--background-secondary)';
 
     const deckNameLabel = deckNameContainer.createEl('label', {
       text: 'Anki Deck Name:',
       cls: 'setting-item-name'
     });
-    deckNameLabel.style.display = 'block';
-    deckNameLabel.style.marginBottom = '8px';
 
     const deckNameInput = deckNameContainer.createEl('input', {
       type: 'text',
       value: this.deckName,
       placeholder: 'Enter deck name...'
     });
-    deckNameInput.style.width = '100%';
-    deckNameInput.style.padding = '8px';
-    deckNameInput.style.border = '1px solid var(--background-modifier-border)';
-    deckNameInput.style.borderRadius = '4px';
-    deckNameInput.style.backgroundColor = 'var(--background-primary)';
-    deckNameInput.style.color = 'var(--text-normal)';
 
     deckNameInput.addEventListener('input', (e) => {
       this.deckName = (e.target as HTMLInputElement).value.trim() || 'ObsiCard';
@@ -89,9 +73,6 @@ export class ReviewModal extends Modal {
 
     // Flashcard list
     const cardList = contentEl.createDiv('flashcard-list');
-    cardList.style.maxHeight = '60vh';
-    cardList.style.overflowY = 'auto';
-    cardList.style.marginBottom = '16px';
 
     this.flashcards.forEach((card, index) => {
       const cardEl = this.createFlashcardElement(card, index);
@@ -100,27 +81,17 @@ export class ReviewModal extends Modal {
 
     // Buttons
     const buttonContainer = contentEl.createDiv('button-container');
-    buttonContainer.style.display = 'flex';
-    buttonContainer.style.justifyContent = 'space-between';
-    buttonContainer.style.marginTop = '20px';
 
-    const leftButtons = buttonContainer.createDiv();
-    leftButtons.style.display = 'flex';
-    leftButtons.style.gap = '8px';
+    const leftButtons = buttonContainer.createDiv('left-buttons');
 
     const cancelButton = leftButtons.createEl('button', { text: 'Cancel' });
     cancelButton.addEventListener('click', () => this.close());
 
-    const rightButtons = buttonContainer.createDiv();
-    rightButtons.style.display = 'flex';
-    rightButtons.style.gap = '8px';
+    const rightButtons = buttonContainer.createDiv('right-buttons');
 
     const selectedCount = rightButtons.createEl('span', {
       text: `${this.selectedCards.size} selected`
     });
-    selectedCount.style.alignSelf = 'center';
-    selectedCount.style.marginRight = '8px';
-    selectedCount.style.color = 'var(--text-muted)';
     selectedCount.id = 'selected-count';
 
     const approveButton = rightButtons.createEl('button', {
@@ -154,18 +125,10 @@ export class ReviewModal extends Modal {
   private createFlashcardElement(card: Flashcard, index: number): HTMLElement {
     const cardEl = document.createElement('div');
     cardEl.className = 'flashcard-item';
-    cardEl.style.border = '1px solid var(--background-modifier-border)';
-    cardEl.style.borderRadius = '8px';
-    cardEl.style.padding = '16px';
-    cardEl.style.marginBottom = '12px';
-    cardEl.style.transition = 'all 0.2s';
-    cardEl.style.cursor = 'pointer';
     cardEl.dataset.index = String(index);
     
     // Explicitly disable dragging
     cardEl.draggable = false;
-    (cardEl.style as any).userDrag = 'none';
-    (cardEl.style as any).webkitUserDrag = 'none';
     
     // Prevent all drag events
     cardEl.addEventListener('dragstart', (e) => e.preventDefault());
@@ -193,13 +156,11 @@ export class ReviewModal extends Modal {
 
     // Checkbox
     const checkboxContainer = cardEl.createDiv('checkbox-container');
-    checkboxContainer.style.marginBottom = '12px';
 
     const checkbox = checkboxContainer.createEl('input', {
       type: 'checkbox'
     });
     checkbox.checked = this.selectedCards.has(index);
-    checkbox.style.marginRight = '8px';
     checkbox.addEventListener('change', (e) => {
       e.stopPropagation(); // Prevent card click
       if (checkbox.checked) {
@@ -214,8 +175,6 @@ export class ReviewModal extends Modal {
     const checkboxLabel = checkboxContainer.createEl('label', {
       text: `Flashcard ${index + 1}`
     });
-    checkboxLabel.style.fontWeight = 'bold';
-    checkboxLabel.style.cursor = 'pointer';
     checkboxLabel.addEventListener('click', (e) => {
       e.stopPropagation(); // Prevent card click
       checkbox.checked = !checkbox.checked;
@@ -226,20 +185,17 @@ export class ReviewModal extends Modal {
     const frontDiv = cardEl.createDiv('card-front');
     frontDiv.createEl('strong', { text: 'Front: ' });
     frontDiv.createSpan({ text: card.front });
-    frontDiv.style.marginBottom = '8px';
 
     // Back
     const backDiv = cardEl.createDiv('card-back');
     backDiv.createEl('strong', { text: 'Back: ' });
     backDiv.createSpan({ text: card.back });
-    backDiv.style.marginBottom = '8px';
 
     // Tags
     if (card.tags && card.tags.length > 0) {
       const tagsDiv = cardEl.createDiv('card-tags');
       tagsDiv.createEl('strong', { text: 'Tags: ' });
       const tagsSpan = tagsDiv.createSpan();
-      tagsSpan.style.color = 'var(--text-muted)';
       tagsSpan.textContent = card.tags.map(tag => `#${tag}`).join(' ');
     }
 
@@ -248,8 +204,6 @@ export class ReviewModal extends Modal {
       text: 'Edit',
       cls: 'clickable-icon'
     });
-    editButton.style.marginTop = '8px';
-    editButton.style.fontSize = '12px';
     editButton.addEventListener('click', (e) => {
       e.stopPropagation(); // Prevent card click
       this.editFlashcard(card, index);
@@ -265,18 +219,11 @@ export class ReviewModal extends Modal {
    */
   private updateCardAppearance(cardEl: HTMLElement, selected: boolean): void {
     if (selected) {
-      cardEl.style.background = 'var(--background-secondary)';
-      cardEl.style.borderColor = 'var(--interactive-accent)';
-      cardEl.style.borderWidth = '2px';
-      cardEl.style.opacity = '1';
-      // Add highlight effect
-      cardEl.style.boxShadow = '0 0 0 2px var(--interactive-accent-hover)';
+      cardEl.classList.add('selected');
+      cardEl.classList.remove('unselected');
     } else {
-      cardEl.style.background = 'var(--background-primary)';
-      cardEl.style.borderColor = 'var(--background-modifier-border)';
-      cardEl.style.borderWidth = '1px';
-      cardEl.style.opacity = '0.6';
-      cardEl.style.boxShadow = 'none';
+      cardEl.classList.add('unselected');
+      cardEl.classList.remove('selected');
     }
   }
 
@@ -382,78 +329,11 @@ export class ReviewModal extends Modal {
   }
 
   /**
-   * Add custom styles
+   * Add custom styles - now handled by CSS file
    */
   private addStyles(): void {
-    if (!document.querySelector('#obsicard-review-styles')) {
-      const style = document.createElement('style');
-      style.id = 'obsicard-review-styles';
-      style.textContent = `
-        .obsicard-review-modal .modal {
-          width: 80%;
-          max-width: 800px;
-        }
-        .flashcard-item:hover {
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Completely remove any drag handles - more comprehensive */
-        .obsicard-review-modal .flashcard-item::before,
-        .obsicard-review-modal .flashcard-item::after,
-        .obsicard-review-modal .flashcard-item .drag-handle,
-        .obsicard-review-modal .flashcard-item .handle,
-        .obsicard-review-modal .flashcard-item [data-drag-handle],
-        .obsicard-review-modal .flashcard-item .list-item-drag-handle,
-        .obsicard-review-modal .flashcard-item .list-item-handle,
-        .obsicard-review-modal .flashcard-item .workspace-leaf-drag-handle,
-        .obsicard-review-modal .flashcard-item .tree-item-inner::before,
-        .obsicard-review-modal .flashcard-item .tree-item-inner::after,
-        .obsicard-review-modal .flashcard-item .tree-item-self::before,
-        .obsicard-review-modal .flashcard-item .tree-item-self::after,
-        .obsicard-review-modal .flashcard-item .nav-file-title::before,
-        .obsicard-review-modal .flashcard-item .nav-file-title::after,
-        .obsicard-review-modal .flashcard-item .nav-folder-title::before,
-        .obsicard-review-modal .flashcard-item .nav-folder-title::after,
-        .obsicard-review-modal .flashcard-item .sidebar-drag-handle,
-        .obsicard-review-modal .flashcard-item .mod-drag-handle {
-          display: none !important;
-          visibility: hidden !important;
-          opacity: 0 !important;
-          width: 0 !important;
-          height: 0 !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          position: absolute !important;
-          left: -9999px !important;
-          top: -9999px !important;
-        }
-        
-        /* Disable all dragging */
-        .obsicard-review-modal .flashcard-item,
-        .obsicard-review-modal .flashcard-item * {
-          -webkit-user-drag: none !important;
-          -khtml-user-drag: none !important;
-          -moz-user-drag: none !important;
-          -o-user-drag: none !important;
-          user-drag: none !important;
-          draggable: false !important;
-        }
-        
-        /* Disabled button styling */
-        .obsicard-review-modal #approve-button.is-disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-          background: var(--background-modifier-border);
-          color: var(--text-muted);
-        }
-        
-        .obsicard-review-modal #approve-button.is-disabled:hover {
-          background: var(--background-modifier-border);
-          color: var(--text-muted);
-        }
-      `;
-      document.head.appendChild(style);
-    }
+    // Styles are now handled by the main CSS file
+    // This method is kept for compatibility but does nothing
   }
 
   onClose(): void {
@@ -478,6 +358,7 @@ class EditFlashcardModal extends Modal {
   onOpen(): void {
     const { contentEl } = this;
     contentEl.empty();
+    contentEl.addClass('obsicard-edit-modal');
 
     contentEl.createEl('h2', { text: 'Edit Flashcard' });
 
@@ -485,30 +366,19 @@ class EditFlashcardModal extends Modal {
     contentEl.createEl('label', { text: 'Front' });
     const frontInput = contentEl.createEl('textarea');
     frontInput.value = this.card.front;
-    frontInput.style.width = '100%';
-    frontInput.style.minHeight = '80px';
-    frontInput.style.marginBottom = '16px';
 
     // Back
     contentEl.createEl('label', { text: 'Back' });
     const backInput = contentEl.createEl('textarea');
     backInput.value = this.card.back;
-    backInput.style.width = '100%';
-    backInput.style.minHeight = '120px';
-    backInput.style.marginBottom = '16px';
 
     // Tags
     contentEl.createEl('label', { text: 'Tags (comma-separated)' });
     const tagsInput = contentEl.createEl('input', { type: 'text' });
     tagsInput.value = this.card.tags.join(', ');
-    tagsInput.style.width = '100%';
-    tagsInput.style.marginBottom = '16px';
 
     // Buttons
-    const buttonContainer = contentEl.createDiv();
-    buttonContainer.style.display = 'flex';
-    buttonContainer.style.justifyContent = 'flex-end';
-    buttonContainer.style.gap = '8px';
+    const buttonContainer = contentEl.createDiv('button-container');
 
     const cancelButton = buttonContainer.createEl('button', { text: 'Cancel' });
     cancelButton.addEventListener('click', () => this.close());

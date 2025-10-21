@@ -11,9 +11,10 @@ describe('Flashcard Flow Integration', () => {
   let ankiService: AnkiSyncService;
 
   beforeEach(() => {
-    // Setup services
-    groqService = new GroqFlashcardService(DEFAULT_SETTINGS);
-    ankiService = new AnkiSyncService(DEFAULT_SETTINGS);
+    // Setup services with mock API key
+    const settingsWithApiKey = { ...DEFAULT_SETTINGS, groqApiKey: 'mock-api-key' };
+    groqService = new GroqFlashcardService(settingsWithApiKey);
+    ankiService = new AnkiSyncService(settingsWithApiKey);
 
     // Mock fetch
     global.fetch = vi.fn();
@@ -21,12 +22,12 @@ describe('Flashcard Flow Integration', () => {
 
   it('should complete full flashcard generation flow', async () => {
     // Mock Groq API
-    (global.fetch as any).mockImplementation((url: string) => {
+    (global.fetch as ReturnType<typeof vi.fn>).mockImplementation((url: string) => {
       if (url.includes('groq.com')) {
         return Promise.resolve({
           ok: true,
           json: async () => mockFlashcardResponse
-        });
+        } as Response);
       }
       return Promise.reject(new Error('Unknown URL'));
     });
@@ -63,7 +64,7 @@ describe('Flashcard Flow Integration', () => {
     let callCount = 0;
 
     // Mock AnkiConnect - fail first, succeed second
-    (global.fetch as any).mockImplementation((url: string) => {
+    (global.fetch as ReturnType<typeof vi.fn>).mockImplementation((url: string) => {
       if (url.includes('8765')) {
         callCount++;
         if (callCount === 1) {

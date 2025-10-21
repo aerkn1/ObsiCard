@@ -17,30 +17,30 @@ export class Notice {
 }
 
 export class Plugin {
-  app: any;
-  manifest: any;
+  app: App;
+  manifest: unknown;
 
-  loadData(): Promise<any> {
+  loadData(): Promise<unknown> {
     return Promise.resolve({});
   }
 
-  saveData(data: any): Promise<void> {
+  saveData(data: unknown): Promise<void> {
     return Promise.resolve();
   }
 
-  addCommand(command: any): void {
+  addCommand(command: unknown): void {
     // Mock implementation
   }
 
-  addSettingTab(tab: any): void {
+  addSettingTab(tab: unknown): void {
     // Mock implementation
   }
 
-  addRibbonIcon(icon: string, title: string, callback: () => void): any {
+  addRibbonIcon(icon: string, title: string, callback: () => void): unknown {
     return {};
   }
 
-  registerEvent(event: any): void {
+  registerEvent(event: unknown): void {
     // Mock implementation
   }
 }
@@ -58,10 +58,10 @@ export class TFile {
 }
 
 export class Modal {
-  app: any;
+  app: App;
   contentEl: HTMLDivElement;
 
-  constructor(app: any) {
+  constructor(app: App) {
     this.app = app;
     this.contentEl = document.createElement('div');
   }
@@ -99,7 +99,7 @@ export class Setting {
     return this;
   }
 
-  addText(callback: (text: any) => void): this {
+  addText(callback: (text: { inputEl: HTMLInputElement; setPlaceholder: (placeholder: string) => unknown; setValue: (value: string) => unknown; onChange: (callback: (value: string) => void) => unknown }) => void): this {
     const text = {
       inputEl: document.createElement('input'),
       setPlaceholder: (placeholder: string) => text,
@@ -110,7 +110,7 @@ export class Setting {
     return this;
   }
 
-  addToggle(callback: (toggle: any) => void): this {
+  addToggle(callback: (toggle: { setValue: (value: boolean) => unknown; onChange: (callback: (value: boolean) => void) => unknown }) => void): this {
     const toggle = {
       setValue: (value: boolean) => toggle,
       onChange: (callback: (value: boolean) => void) => toggle
@@ -119,7 +119,7 @@ export class Setting {
     return this;
   }
 
-  addDropdown(callback: (dropdown: any) => void): this {
+  addDropdown(callback: (dropdown: { addOption: (value: string, text: string) => unknown; setValue: (value: string) => unknown; onChange: (callback: (value: string) => void) => unknown }) => void): this {
     const dropdown = {
       addOption: (value: string, text: string) => dropdown,
       setValue: (value: string) => dropdown,
@@ -129,7 +129,7 @@ export class Setting {
     return this;
   }
 
-  addButton(callback: (button: any) => void): this {
+  addButton(callback: (button: { buttonEl: HTMLButtonElement; setButtonText: (text: string) => unknown; onClick: (callback: () => void) => unknown; setWarning: () => unknown }) => void): this {
     const button = {
       buttonEl: document.createElement('button'),
       setButtonText: (text: string) => button,
@@ -142,11 +142,11 @@ export class Setting {
 }
 
 export class PluginSettingTab {
-  app: any;
-  plugin: any;
+  app: App;
+  plugin: Plugin;
   containerEl: HTMLDivElement;
 
-  constructor(app: any, plugin: any) {
+  constructor(app: App, plugin: Plugin) {
     this.app = app;
     this.plugin = plugin;
     this.containerEl = document.createElement('div');
@@ -166,7 +166,7 @@ export class MarkdownView {
 }
 
 export class Menu {
-  addItem(callback: (item: any) => void): this {
+  addItem(callback: (item: { setTitle: (title: string) => unknown; setIcon: (icon: string) => unknown; onClick: (callback: () => void) => unknown }) => void): this {
     const item = {
       setTitle: (title: string) => item,
       setIcon: (icon: string) => item,
@@ -178,8 +178,8 @@ export class Menu {
 }
 
 export class App {
-  vault: any;
-  workspace: any;
+  vault: { read: (file: TFile) => Promise<string>; modify: (file: TFile, content: string) => Promise<void> };
+  workspace: { getActiveViewOfType: (type: unknown) => unknown; on: (event: string, callback: unknown) => void };
 
   constructor() {
     this.vault = {
@@ -188,8 +188,8 @@ export class App {
     };
 
     this.workspace = {
-      getActiveViewOfType: (type: any) => null,
-      on: (event: string, callback: any) => {}
+      getActiveViewOfType: (type: unknown) => null,
+      on: (event: string, callback: unknown) => {}
     };
   }
 }

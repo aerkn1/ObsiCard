@@ -22,6 +22,7 @@ export class PreGenerationModal extends Modal {
   onOpen(): void {
     const { contentEl } = this;
     contentEl.empty();
+    contentEl.addClass('obsicard-pregen-modal');
 
     contentEl.createEl('h2', { text: 'Generate Flashcards' });
     contentEl.createEl('p', { 
@@ -60,11 +61,10 @@ export class PreGenerationModal extends Modal {
               .map(tag => tag.trim())
               .filter(tag => tag.length > 0);
           });
-        text.inputEl.style.width = '100%';
       });
 
     // Store reference for visibility toggle
-    (tagsContainer as any).settingEl = tagsSetting;
+    (tagsContainer as unknown as HTMLElement & { settingEl: Setting }).settingEl = tagsSetting;
 
     // Initial visibility
     this.updateTagsVisibility();
@@ -78,21 +78,12 @@ export class PreGenerationModal extends Modal {
 
     const commonTags = ['important', 'review', 'exam', 'concept', 'definition', 'formula'];
     const buttonContainer = suggestionsDiv.createDiv('button-container');
-    buttonContainer.style.display = 'flex';
-    buttonContainer.style.flexWrap = 'wrap';
-    buttonContainer.style.gap = '8px';
-    buttonContainer.style.marginTop = '8px';
 
     for (const tag of commonTags) {
       const button = buttonContainer.createEl('button', {
         text: tag,
         cls: 'tag-suggestion-button'
       });
-      button.style.padding = '4px 12px';
-      button.style.borderRadius = '4px';
-      button.style.border = '1px solid var(--background-modifier-border)';
-      button.style.background = 'var(--background-secondary)';
-      button.style.cursor = 'pointer';
 
       button.addEventListener('click', () => {
         if (!this.tags.includes(tag)) {
@@ -104,10 +95,6 @@ export class PreGenerationModal extends Modal {
 
     // Buttons
     const buttonContainer2 = contentEl.createDiv('button-container');
-    buttonContainer2.style.display = 'flex';
-    buttonContainer2.style.justifyContent = 'flex-end';
-    buttonContainer2.style.gap = '8px';
-    buttonContainer2.style.marginTop = '20px';
 
     const cancelButton = buttonContainer2.createEl('button', { text: 'Cancel' });
     cancelButton.addEventListener('click', () => this.close());
