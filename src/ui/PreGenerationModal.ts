@@ -24,7 +24,7 @@ export class PreGenerationModal extends Modal {
     contentEl.empty();
     contentEl.addClass('obsicard-pregen-modal');
 
-    contentEl.createEl('h2', { text: 'Generate Flashcards' });
+    contentEl.createEl('h2', { text: 'Generate flashcards' });
     contentEl.createEl('p', { 
       text: 'Configure how flashcards should be generated from your content.',
       cls: 'setting-item-description'
@@ -32,7 +32,7 @@ export class PreGenerationModal extends Modal {
 
     // Mode selection
     new Setting(contentEl)
-      .setName('Generation Mode')
+      .setName('Generation mode')
       .setDesc('Dynamic: AI suggests tags based on content. Fixed: Use your specified tags.')
       .addDropdown(dropdown => {
         dropdown
@@ -50,7 +50,7 @@ export class PreGenerationModal extends Modal {
     
     const tagsSetting = new Setting(tagsContainer)
       .setName('Tags')
-      .setDesc('Comma-separated tags for flashcards (e.g., history, important, exam)')
+      .setDesc('Comma-separated tags for flashcards (e.g., history, important, exam).')
       .addText(text => {
         text
           .setPlaceholder('Enter tags...')
@@ -115,12 +115,24 @@ export class PreGenerationModal extends Modal {
   private updateTagsVisibility(): void {
     const tagsContainer = this.contentEl.querySelector('.tags-container') as HTMLElement;
     if (tagsContainer) {
-      tagsContainer.style.display = this.mode === GenerationMode.FIXED ? 'block' : 'none';
+      if (this.mode === GenerationMode.FIXED) {
+        tagsContainer.classList.add('visible');
+        tagsContainer.classList.remove('hidden');
+      } else {
+        tagsContainer.classList.add('hidden');
+        tagsContainer.classList.remove('visible');
+      }
     }
 
     const suggestionsDiv = this.contentEl.querySelector('.tag-suggestions') as HTMLElement;
     if (suggestionsDiv) {
-      suggestionsDiv.style.display = this.mode === GenerationMode.FIXED ? 'block' : 'none';
+      if (this.mode === GenerationMode.FIXED) {
+        suggestionsDiv.classList.add('visible');
+        suggestionsDiv.classList.remove('hidden');
+      } else {
+        suggestionsDiv.classList.add('hidden');
+        suggestionsDiv.classList.remove('visible');
+      }
     }
   }
 

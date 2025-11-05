@@ -1,6 +1,6 @@
 {
   "name": "obsicard",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "AI-Powered Flashcard Generator for Obsidian",
   "main": "main.js",
   "type": "module",

@@ -31,7 +31,7 @@ export class ReviewModal extends Modal {
 
     // Header
     const header = contentEl.createDiv('review-header');
-    header.createEl('h2', { text: 'Review Flashcards' });
+    header.createEl('h2', { text: 'Review flashcards' });
     header.createEl('p', {
       text: `${this.flashcards.length} flashcard(s) generated. Select the ones you want to keep.`,
       cls: 'setting-item-description'
@@ -40,15 +40,15 @@ export class ReviewModal extends Modal {
     // Toggle select all / deselect all
     const selectControls = contentEl.createDiv('select-controls');
 
-    const toggleSelectBtn = selectControls.createEl('button', { text: 'Select All' });
+    const toggleSelectBtn = selectControls.createEl('button', { text: 'Select all' });
     toggleSelectBtn.addEventListener('click', () => {
       const allSelected = this.selectedCards.size === this.flashcards.length;
       if (allSelected) {
         this.selectedCards.clear();
-        toggleSelectBtn.textContent = 'Select All';
+        toggleSelectBtn.textContent = 'Select all';
       } else {
         this.selectedCards = new Set(this.flashcards.map((_, i) => i));
-        toggleSelectBtn.textContent = 'Deselect All';
+        toggleSelectBtn.textContent = 'Deselect all';
       }
       this.updateCardSelection();
     });
@@ -57,7 +57,7 @@ export class ReviewModal extends Modal {
     const deckNameContainer = contentEl.createDiv('deck-name-container');
 
     const deckNameLabel = deckNameContainer.createEl('label', {
-      text: 'Anki Deck Name:',
+      text: 'Anki deck name:',
       cls: 'setting-item-name'
     });
 
@@ -95,7 +95,7 @@ export class ReviewModal extends Modal {
     selectedCount.id = 'selected-count';
 
     const approveButton = rightButtons.createEl('button', {
-      text: 'Approve & Save',
+      text: 'Approve & save',
       cls: 'mod-cta'
     });
     approveButton.id = 'approve-button';
@@ -246,7 +246,7 @@ export class ReviewModal extends Modal {
     const toggleBtn = this.contentEl.querySelector('.select-controls button');
     if (toggleBtn) {
       const allSelected = this.selectedCards.size === this.flashcards.length;
-      toggleBtn.textContent = allSelected ? 'Deselect All' : 'Select All';
+      toggleBtn.textContent = allSelected ? 'Deselect all' : 'Select all';
     }
   }
 
@@ -271,7 +271,7 @@ export class ReviewModal extends Modal {
       approveButton.disabled = !hasSelection;
       
       if (hasSelection) {
-        approveButton.textContent = `Approve & Save (${this.selectedCards.size})`;
+        approveButton.textContent = `Approve & save (${this.selectedCards.size})`;
         approveButton.classList.remove('is-disabled');
       } else {
         approveButton.textContent = 'Select flashcards to save';
@@ -305,7 +305,7 @@ export class ReviewModal extends Modal {
               // Remove any drag handles that might be added
               const dragHandles = element.querySelectorAll('.drag-handle, .handle, [data-drag-handle], .list-item-drag-handle, .list-item-handle, .workspace-leaf-drag-handle, .sidebar-drag-handle, .mod-drag-handle');
               dragHandles.forEach(handle => {
-                (handle as HTMLElement).style.display = 'none';
+                (handle as HTMLElement).classList.add('obsicard-drag-handle-removed');
                 (handle as HTMLElement).remove();
               });
               
@@ -313,7 +313,7 @@ export class ReviewModal extends Modal {
               if (element.classList.contains('drag-handle') || 
                   element.classList.contains('handle') || 
                   element.hasAttribute('data-drag-handle')) {
-                element.style.display = 'none';
+                element.classList.add('obsicard-drag-handle-removed');
                 element.remove();
               }
             }
@@ -360,7 +360,7 @@ class EditFlashcardModal extends Modal {
     contentEl.empty();
     contentEl.addClass('obsicard-edit-modal');
 
-    contentEl.createEl('h2', { text: 'Edit Flashcard' });
+    contentEl.createEl('h2', { text: 'Edit flashcard' });
 
     // Front
     contentEl.createEl('label', { text: 'Front' });

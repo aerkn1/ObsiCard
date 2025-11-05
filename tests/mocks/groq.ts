@@ -63,8 +63,8 @@ export const mockEmptyResponse = {
   ]
 };
 
-export function createMockFetch(response: any, shouldFail = false) {
-  return async (url: string, options?: any) => {
+export function createMockFetch(response: unknown, shouldFail = false) {
+  return async (url: string, options?: RequestInit) => {
     if (shouldFail) {
       throw new Error('Network error');
     }

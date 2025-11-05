@@ -10,6 +10,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Future features will be listed here
 
+## [1.1.0] - 2025-11-05
+
+### Changed
+- Replaced `fetch` API with Obsidian's `requestUrl` for better compatibility
+- Replaced `localStorage` with Obsidian's `App.loadLocalStorage`/`saveLocalStorage` API
+- Replaced browser `confirm()` with Obsidian modal dialog
+- All inline styles moved to CSS classes for better theme compatibility
+- All UI text converted to sentence case following Obsidian conventions
+- Settings headings now use `Setting.setHeading()` for consistency
+
+### Fixed
+- Fixed promise handling in async callbacks (added `void` operator)
+- Fixed Anki sync status reporting to accurately reflect synced/queued/failed states
+- Fixed toast notification spam - now shows single comprehensive result message
+- Fixed drag handles visibility in review modal
+- Removed all unnecessary type casting (`any` → proper types)
+- Fixed TypeScript compilation errors in test files
+
+### Improved
+- Enhanced error messages in Groq API connection testing
+- Better queue status tracking with detailed sync/queue/error counts
+- Improved code quality and type safety throughout
+- All ObsidianReviewBot feedback addressed
+
+### Technical
+- Updated `AnkiSyncService` to accept `App` instance for proper localStorage access
+- Improved CSS organization and theme compatibility
+- Enhanced test coverage and type safety
+
 ## [1.0.0] - 2025-10-19
 
 ### Added
@@ -154,6 +183,7 @@ This is the initial stable release of ObsiCard.
 
 ---
 
-[Unreleased]: https://github.com/aerkn1/ObsiCard/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/aerkn1/ObsiCard/releases/tag/v1.0.0
+[Unreleased]: https://github.com/aerkn1/ObsiCard/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/aerkn1/ObsiCard/releases/tag/1.1.0
+[1.0.0]: https://github.com/aerkn1/ObsiCard/releases/tag/1.0.0
 

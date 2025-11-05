@@ -1,4 +1,4 @@
-import { Notice } from 'obsidian';
+import { Notice, requestUrl } from 'obsidian';
 import { Flashcard, GroqResponse, ObsiCardSettings, GenerationMode } from '../types';
 import { TokenUtils } from '../utils/TokenUtils';
 import { Validator } from './Validator';
@@ -209,7 +209,8 @@ JSON array:`;
    * @returns API response
    */
   private async callGroqAPI(prompt: string, isSummary = false): Promise<unknown> {
-    const response = await fetch(this.GROQ_API_URL, {
+    const response = await requestUrl({
+      url: this.GROQ_API_URL,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -234,18 +235,22 @@ JSON array:`;
       })
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
+    if (response.status !== 200) {
+      const errorText = response.text;
       throw new Error(`Groq API error (${response.status}): ${errorText}`);
     }
 
-    const data = await response.json();
+    const data = response.json as { choices?: Array<{ message?: { content?: string } }> };
     
     if (!data.choices || !data.choices[0] || !data.choices[0].message) {
       throw new Error('Invalid response format from Groq API');
     }
 
     const content = data.choices[0].message.content;
+    
+    if (!content) {
+      throw new Error('No content in response from Groq API');
+    }
     
     if (isSummary) {
       return content;
@@ -303,7 +308,7 @@ JSON array:`;
    * Test API connection with detailed error reporting
    * @returns Connection test result with details
    */
-  async testConnection(): Promise<{ success: boolean; message: string; details?: any }> {
+  async testConnection(): Promise<{ success: boolean; message: string; details?: Record<string, unknown> }> {
     try {
       // Check if API key is provided
       if (!this.settings.groqApiKey || this.settings.groqApiKey.trim() === '') {
@@ -321,7 +326,8 @@ JSON array:`;
         };
       }
 
-      const response = await fetch(this.GROQ_API_URL, {
+      const response = await requestUrl({
+        url: this.GROQ_API_URL,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -339,14 +345,15 @@ JSON array:`;
         })
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+      if (response.status !== 200) {
+        const errorText = response.text;
+        let errorMessage = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
         
         try {
           const errorData = JSON.parse(errorText);
-          if (errorData.error) {
-            errorMessage = errorData.error.message || errorData.error.type || errorMessage;
+          if (errorData && typeof errorData === 'object' && 'error' in errorData) {
+            const error = errorData.error as { message?: string; type?: string };
+            errorMessage = error.message || error.type || errorMessage;
           }
         } catch {
           // Use the raw error text if JSON parsing fails
@@ -364,7 +371,7 @@ JSON array:`;
         };
       }
 
-      const data = await response.json();
+      const data = response.json;
       
       return {
         success: true,

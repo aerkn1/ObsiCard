@@ -1,4 +1,4 @@
-import { App, PluginSettingTab, Setting, Notice } from 'obsidian';
+import { App, PluginSettingTab, Setting, Notice, Modal } from 'obsidian';
 import ObsiCardPlugin from '../../main';
 
 /**
@@ -16,13 +16,13 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
-    containerEl.createEl('h2', { text: 'ObsiCard Settings' });
+    new Setting(containerEl).setHeading().setName('ObsiCard settings');
 
     // Groq API Settings
-    containerEl.createEl('h3', { text: 'Groq API Configuration' });
+    new Setting(containerEl).setHeading().setName('Groq API configuration');
 
     new Setting(containerEl)
-      .setName('Groq API Key')
+      .setName('Groq API key')
       .setDesc('Your Groq API key for AI flashcard generation.')
       .addText(text => {
         text
@@ -33,11 +33,11 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           });
         text.inputEl.type = 'password';
-        text.inputEl.style.width = '300px';
+        text.inputEl.addClass('obsicard-setting-input');
       })
       .addButton(button => {
         button
-          .setButtonText('Test Connection')
+          .setButtonText('Test connection')
           .onClick(async () => {
             const testButton = button.buttonEl;
             testButton.disabled = true;
@@ -55,13 +55,13 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
 
             setTimeout(() => {
               testButton.disabled = false;
-              testButton.textContent = 'Test Connection';
+              testButton.textContent = 'Test connection';
             }, 2000);
           });
       });
 
     new Setting(containerEl)
-      .setName('Groq Model')
+      .setName('Groq model')
       .setDesc('Model ID, e.g., llama-3.1-8b-instant (editable).')
       .addText(text => {
         text
@@ -71,7 +71,7 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
             this.plugin.settings.groqModel = value.trim();
             await this.plugin.saveSettings();
           });
-        text.inputEl.style.width = '300px';
+        text.inputEl.addClass('obsicard-setting-input');
       })
       .addExtraButton(button => {
         button.setIcon('reset')
@@ -84,11 +84,11 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
       });
 
     // Anki Settings
-    containerEl.createEl('h3', { text: 'Anki Integration' });
+    new Setting(containerEl).setHeading().setName('Anki integration');
 
     new Setting(containerEl)
       .setName('AnkiConnect URL')
-      .setDesc('URL for AnkiConnect API (default: http://127.0.0.1:8765)')
+      .setDesc('URL for AnkiConnect API (default: http://127.0.0.1:8765).')
       .addText(text => {
         text
           .setPlaceholder('http://127.0.0.1:8765')
@@ -97,11 +97,11 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
             this.plugin.settings.ankiConnectUrl = value;
             await this.plugin.saveSettings();
           });
-        text.inputEl.style.width = '300px';
+        text.inputEl.addClass('obsicard-setting-input');
       })
       .addButton(button => {
         button
-          .setButtonText('Test Connection')
+          .setButtonText('Test connection')
           .onClick(async () => {
             const testButton = button.buttonEl;
             testButton.disabled = true;
@@ -119,13 +119,13 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
 
             setTimeout(() => {
               testButton.disabled = false;
-              testButton.textContent = 'Test Connection';
+              testButton.textContent = 'Test connection';
             }, 2000);
           });
       });
 
     new Setting(containerEl)
-      .setName('Anki Deck Name')
+      .setName('Anki deck name')
       .setDesc('Name of the Anki deck to sync flashcards to.')
       .addText(text => {
         text
@@ -138,7 +138,7 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
       })
       .addButton(button => {
         button
-          .setButtonText('Browse Decks')
+          .setButtonText('Browse decks')
           .onClick(async () => {
             const decks = await this.plugin.ankiService.getDeckNames();
             if (decks.length > 0) {
@@ -162,11 +162,11 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
       });
 
     // Advanced Settings
-    containerEl.createEl('h3', { text: 'Advanced Settings' });
+    new Setting(containerEl).setHeading().setName('Advanced settings');
 
     new Setting(containerEl)
-      .setName('Max Chunk Size')
-      .setDesc('Maximum tokens per chunk for processing (default: 3500)')
+      .setName('Max chunk size')
+      .setDesc('Maximum tokens per chunk for processing (default: 3500).')
       .addText(text => {
         text
           .setPlaceholder('3500')
@@ -182,8 +182,8 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Max Parallel Requests')
-      .setDesc('Maximum number of concurrent API requests (1-5, default: 3)')
+      .setName('Max parallel requests')
+      .setDesc('Maximum number of concurrent API requests (1-5, default: 3).')
       .addText(text => {
         text
           .setPlaceholder('3')
@@ -199,7 +199,7 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Enable Offline Queue')
+      .setName('Enable offline queue')
       .setDesc('Queue flashcards when Anki is offline and sync later.')
       .addToggle(toggle => {
         toggle
@@ -211,8 +211,8 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Max Retries')
-      .setDesc('Maximum retry attempts for failed syncs (default: 3)')
+      .setName('Max retries')
+      .setDesc('Maximum retry attempts for failed syncs (default: 3).')
       .addText(text => {
         text
           .setPlaceholder('3')
@@ -228,8 +228,8 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Default Tags')
-      .setDesc('Default tags to apply to flashcards (comma-separated)')
+      .setName('Default tags')
+      .setDesc('Default tags to apply to flashcards (comma-separated).')
       .addText(text => {
         text
           .setPlaceholder('obsidian, review')
@@ -241,20 +241,20 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
               .filter(tag => tag.length > 0);
             await this.plugin.saveSettings();
           });
-        text.inputEl.style.width = '300px';
+        text.inputEl.addClass('obsicard-setting-input');
       });
 
     // Queue Management
-    containerEl.createEl('h3', { text: 'Queue Management' });
+    new Setting(containerEl).setHeading().setName('Queue management');
 
     const queueStatus = this.plugin.ankiService.getQueueStatus();
     
     new Setting(containerEl)
-      .setName('Sync Queue')
-      .setDesc(`Currently ${queueStatus.count} flashcard(s) in queue`)
+      .setName('Sync queue')
+      .setDesc(`Currently ${queueStatus.count} flashcard(s) in queue.`)
       .addButton(button => {
         button
-          .setButtonText('Process Queue')
+          .setButtonText('Process queue')
           .onClick(async () => {
             const processButton = button.buttonEl;
             processButton.disabled = true;
@@ -269,37 +269,38 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
             }
 
             processButton.disabled = false;
-            processButton.textContent = 'Process Queue';
+            processButton.textContent = 'Process queue';
             this.display(); // Refresh to update count
           });
       })
       .addButton(button => {
         button
-          .setButtonText('Clear Queue')
+          .setButtonText('Clear queue')
           .setWarning()
           .onClick(() => {
-            if (confirm(`Clear ${queueStatus.count} item(s) from queue?`)) {
-              this.plugin.ankiService.clearQueue();
-              new Notice('Queue cleared');
-              this.display(); // Refresh
-            }
+            const confirmModal = new ConfirmModal(
+              this.app,
+              `Clear ${queueStatus.count} item(s) from queue?`,
+              () => {
+                this.plugin.ankiService.clearQueue();
+                new Notice('Queue cleared');
+                this.display(); // Refresh
+              }
+            );
+            confirmModal.open();
           });
       });
 
     // Help Section
-    containerEl.createEl('h3', { text: 'Help & Resources' });
+    new Setting(containerEl).setHeading().setName('Help & resources');
 
-    const helpDiv = containerEl.createDiv();
-    helpDiv.style.padding = '10px';
-    helpDiv.style.background = 'var(--background-secondary)';
-    helpDiv.style.borderRadius = '8px';
+    const helpDiv = containerEl.createDiv('obsicard-help-section');
 
     helpDiv.createEl('p', {
       text: '📚 Getting Started:'
     });
 
-    const list = helpDiv.createEl('ul');
-    list.style.marginLeft = '20px';
+    const list = helpDiv.createEl('ul', 'obsicard-help-list');
 
     list.createEl('li', {
       text: '1. Get a free Groq API key from https://console.groq.com'
@@ -313,22 +314,60 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
       text: '3. Select text or open a note, then right-click → "Generate Flashcards"'
     });
 
-    const linksDiv = containerEl.createDiv();
-    linksDiv.style.marginTop = '16px';
-    linksDiv.style.display = 'flex';
-    linksDiv.style.gap = '12px';
+    const linksDiv = containerEl.createDiv('obsicard-help-links');
 
     const groqLink = linksDiv.createEl('a', {
       text: '🔗 Groq Console',
       href: 'https://console.groq.com'
     });
-    groqLink.style.textDecoration = 'none';
+    groqLink.addClass('obsicard-help-link');
 
     const ankiLink = linksDiv.createEl('a', {
       text: '🔗 AnkiConnect',
       href: 'https://ankiweb.net/shared/info/2055492159'
     });
-    ankiLink.style.textDecoration = 'none';
+    ankiLink.addClass('obsicard-help-link');
+  }
+}
+
+/**
+ * Simple confirmation modal
+ */
+class ConfirmModal extends Modal {
+  private message: string;
+  private onConfirm: () => void;
+
+  constructor(app: App, message: string, onConfirm: () => void) {
+    super(app);
+    this.message = message;
+    this.onConfirm = onConfirm;
+  }
+
+  onOpen(): void {
+    const { contentEl } = this;
+    contentEl.empty();
+    contentEl.addClass('obsicard-confirm-modal');
+
+    contentEl.createEl('p', { text: this.message });
+
+    const buttonContainer = contentEl.createDiv('button-container');
+
+    const cancelButton = buttonContainer.createEl('button', { text: 'Cancel' });
+    cancelButton.addEventListener('click', () => this.close());
+
+    const confirmButton = buttonContainer.createEl('button', {
+      text: 'Confirm',
+      cls: 'mod-cta mod-warning'
+    });
+    confirmButton.addEventListener('click', () => {
+      this.onConfirm();
+      this.close();
+    });
+  }
+
+  onClose(): void {
+    const { contentEl } = this;
+    contentEl.empty();
   }
 }
 

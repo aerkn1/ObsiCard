@@ -1,4 +1,4 @@
-import { Notice } from 'obsidian';
+import { Notice, App, requestUrl } from 'obsidian';
 import { Flashcard, AnkiConnectRequest, AnkiConnectResponse, QueuedSyncItem, ObsiCardSettings } from '../types';
 
 /**
@@ -6,12 +6,15 @@ import { Flashcard, AnkiConnectRequest, AnkiConnectResponse, QueuedSyncItem, Obs
  */
 export class AnkiSyncService {
   private settings: ObsiCardSettings;
+  private app: App;
   private syncQueue: QueuedSyncItem[] = [];
   private isProcessingQueue = false;
   private readonly ANKI_CONNECT_VERSION = 6;
+  private readonly QUEUE_STORAGE_KEY = 'obsicard-sync-queue';
 
-  constructor(settings: ObsiCardSettings) {
+  constructor(settings: ObsiCardSettings, app: App) {
     this.settings = settings;
+    this.app = app;
     this.loadQueue();
   }
 
@@ -21,6 +24,14 @@ export class AnkiSyncService {
    */
   updateSettings(settings: ObsiCardSettings): void {
     this.settings = settings;
+  }
+
+  /**
+   * Update app reference (needed when settings are reloaded)
+   * @param app - Obsidian app instance
+   */
+  updateApp(app: App): void {
+    this.app = app;
   }
 
   /**
@@ -210,7 +221,8 @@ export class AnkiSyncService {
       params
     };
 
-    const response = await fetch(this.settings.ankiConnectUrl, {
+    const response = await requestUrl({
+      url: this.settings.ankiConnectUrl,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -218,11 +230,11 @@ export class AnkiSyncService {
       body: JSON.stringify(request)
     });
 
-    if (!response.ok) {
-      throw new Error(`AnkiConnect request failed: ${response.statusText}`);
+    if (response.status !== 200) {
+      throw new Error(`AnkiConnect request failed: ${response.statusText || 'Unknown error'}`);
     }
 
-    return await response.json();
+    return response.json as AnkiConnectResponse;
   }
 
   /**
@@ -314,22 +326,22 @@ export class AnkiSyncService {
   }
 
   /**
-   * Save queue to localStorage
+   * Save queue to localStorage using App API
    */
   private saveQueue(): void {
     try {
-      localStorage.setItem('obsicard-sync-queue', JSON.stringify(this.syncQueue));
+      this.app.saveLocalStorage(this.QUEUE_STORAGE_KEY, JSON.stringify(this.syncQueue));
     } catch (error) {
       console.error('Failed to save sync queue:', error);
     }
   }
 
   /**
-   * Load queue from localStorage
+   * Load queue from localStorage using App API
    */
   private loadQueue(): void {
     try {
-      const saved = localStorage.getItem('obsicard-sync-queue');
+      const saved = this.app.loadLocalStorage(this.QUEUE_STORAGE_KEY);
       if (saved) {
         this.syncQueue = JSON.parse(saved);
       }
@@ -346,7 +358,9 @@ export class AnkiSyncService {
    */
   startAutoProcessing(intervalMs = 60000): number {
     return window.setInterval(() => {
-      this.processQueue();
+      void this.processQueue().catch((error) => {
+        console.error('Error processing queue:', error);
+      });
     }, intervalMs);
   }
 

@@ -25,7 +25,7 @@ export default class ObsiCardPlugin extends Plugin {
 
     // Initialize services
     this.groqService = new GroqFlashcardService(this.settings);
-    this.ankiService = new AnkiSyncService(this.settings);
+    this.ankiService = new AnkiSyncService(this.settings, this.app);
     this.markdownWriter = new MarkdownWriter(this.app);
 
     // Add settings tab
@@ -43,8 +43,8 @@ export default class ObsiCardPlugin extends Plugin {
     }
 
     // Add ribbon icon
-    this.addRibbonIcon('brain', 'Generate Flashcards', () => {
-      this.generateFlashcardsFromActiveNote();
+    this.addRibbonIcon('brain', 'Generate flashcards', () => {
+      void this.generateFlashcardsFromActiveNote();
     });
 
     console.log('ObsiCard plugin loaded successfully');
@@ -66,11 +66,11 @@ export default class ObsiCardPlugin extends Plugin {
     // Generate from selection
     this.addCommand({
       id: 'generate-flashcards-selection',
-      name: 'Generate Flashcards from Selection',
+      name: 'Generate flashcards from selection',
       editorCallback: (editor) => {
         const selection = editor.getSelection();
         if (selection) {
-          this.generateFlashcards(selection);
+          void this.generateFlashcards(selection);
         } else {
           new Notice('No text selected');
         }
@@ -80,16 +80,16 @@ export default class ObsiCardPlugin extends Plugin {
     // Generate from entire note
     this.addCommand({
       id: 'generate-flashcards-note',
-      name: 'Generate Flashcards from Current Note',
+      name: 'Generate flashcards from current note',
       callback: () => {
-        this.generateFlashcardsFromActiveNote();
+        void this.generateFlashcardsFromActiveNote();
       }
     });
 
     // Process sync queue
     this.addCommand({
       id: 'process-sync-queue',
-      name: 'Process Anki Sync Queue',
+      name: 'Process Anki sync queue',
       callback: async () => {
         const synced = await this.ankiService.processQueue();
         if (synced > 0) {
@@ -103,7 +103,7 @@ export default class ObsiCardPlugin extends Plugin {
     // View queue status
     this.addCommand({
       id: 'view-queue-status',
-      name: 'View Sync Queue Status',
+      name: 'View sync queue status',
       callback: () => {
         const status = this.ankiService.getQueueStatus();
         new Notice(`${status.count} flashcard(s) in sync queue`);
@@ -113,7 +113,7 @@ export default class ObsiCardPlugin extends Plugin {
     // Test connections
     this.addCommand({
       id: 'test-connections',
-      name: 'Test API Connections',
+      name: 'Test API connections',
       callback: async () => {
         new Notice('Testing connections...');
         
@@ -139,14 +139,14 @@ export default class ObsiCardPlugin extends Plugin {
       this.app.workspace.on('editor-menu', (menu: Menu, editor) => {
         menu.addItem((item) => {
           item
-            .setTitle('Generate Flashcards with ObsiCard')
+            .setTitle('Generate flashcards with ObsiCard')
             .setIcon('brain')
             .onClick(() => {
               const selection = editor.getSelection();
               if (selection) {
-                this.generateFlashcards(selection);
+                void this.generateFlashcards(selection);
               } else {
-                this.generateFlashcardsFromActiveNote();
+                void this.generateFlashcardsFromActiveNote();
               }
             });
         });
@@ -159,11 +159,11 @@ export default class ObsiCardPlugin extends Plugin {
         if (file instanceof TFile && file.extension === 'md') {
           menu.addItem((item) => {
             item
-              .setTitle('Generate Flashcards')
+              .setTitle('Generate flashcards')
               .setIcon('brain')
               .onClick(async () => {
                 const content = await this.app.vault.read(file);
-                this.generateFlashcards(content, file);
+                void this.generateFlashcards(content, file);
               });
           });
         }
@@ -375,6 +375,7 @@ export default class ObsiCardPlugin extends Plugin {
     // Update services with new settings
     this.groqService.updateSettings(this.settings);
     this.ankiService.updateSettings(this.settings);
+    this.ankiService.updateApp(this.app);
 
     // Restart queue processing if needed
     if (this.queueProcessInterval) {
