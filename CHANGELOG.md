@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Future features will be listed here
 
+## [1.1.2] - 2025-01-XX
+
+### Fixed
+- Fixed sentence case for UI text: "Groq Console" → "Groq console"
+- Fixed "Getting Started" → "Getting started" in help section
+- Updated "Max" to "Maximum" in setting names for proper sentence case
+
 ## [1.1.1] - 2025-01-XX
 
 ### Fixed
@@ -192,7 +199,8 @@ This is the initial stable release of ObsiCard.
 
 ---
 
-[Unreleased]: https://github.com/aerkn1/ObsiCard/compare/1.1.1...HEAD
+[Unreleased]: https://github.com/aerkn1/ObsiCard/compare/1.1.2...HEAD
+[1.1.2]: https://github.com/aerkn1/ObsiCard/releases/tag/1.1.2
 [1.1.1]: https://github.com/aerkn1/ObsiCard/releases/tag/1.1.1
 [1.1.0]: https://github.com/aerkn1/ObsiCard/releases/tag/1.1.0
 [1.0.0]: https://github.com/aerkn1/ObsiCard/releases/tag/1.0.0

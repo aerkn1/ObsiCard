@@ -347,7 +347,7 @@ JSON array:`;
 
       if (response.status !== 200) {
         const errorText = response.text;
-        let errorMessage = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
+        let errorMessage = `HTTP ${response.status}: Unknown error`;
         
         try {
           const errorData = JSON.parse(errorText);
@@ -365,7 +365,6 @@ JSON array:`;
           message: `Groq API error: ${errorMessage}`,
           details: {
             status: response.status,
-            statusText: response.statusText,
             response: errorText
           }
         };

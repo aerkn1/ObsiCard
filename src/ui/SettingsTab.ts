@@ -165,7 +165,7 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
     new Setting(containerEl).setHeading().setName('Advanced settings');
 
     new Setting(containerEl)
-      .setName('Max chunk size')
+      .setName('Maximum chunk size')
       .setDesc('Maximum tokens per chunk for processing (default: 3500).')
       .addText(text => {
         text
@@ -182,7 +182,7 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Max parallel requests')
+      .setName('Maximum parallel requests')
       .setDesc('Maximum number of concurrent API requests (1-5, default: 3).')
       .addText(text => {
         text
@@ -211,7 +211,7 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Max retries')
+      .setName('Maximum retries')
       .setDesc('Maximum retry attempts for failed syncs (default: 3).')
       .addText(text => {
         text
@@ -297,7 +297,7 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
     const helpDiv = containerEl.createDiv('obsicard-help-section');
 
     helpDiv.createEl('p', {
-      text: '📚 Getting Started:'
+      text: '📚 Getting started:'
     });
 
     const list = helpDiv.createEl('ul', 'obsicard-help-list');
@@ -317,7 +317,7 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
     const linksDiv = containerEl.createDiv('obsicard-help-links');
 
     const groqLink = linksDiv.createEl('a', {
-      text: '🔗 Groq Console',
+      text: '🔗 Groq console',
       href: 'https://console.groq.com'
     });
     groqLink.addClass('obsicard-help-link');

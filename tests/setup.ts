@@ -3,6 +3,7 @@
  */
 
 import { vi } from 'vitest';
+import { JSDOM } from 'jsdom';
 
 // Mock Obsidian API - handled by vite config alias
 
@@ -28,7 +29,6 @@ global.clearInterval = vi.fn();
 
 // Setup DOM
 if (typeof document === 'undefined') {
-  const { JSDOM } = require('jsdom');
   const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
   global.document = dom.window.document;
   global.window = dom.window as Window & typeof globalThis;
