@@ -1,5 +1,5 @@
 import { Notice, requestUrl } from 'obsidian';
-import { Flashcard, GroqResponse, ObsiCardSettings, GenerationMode } from '../types';
+import { Flashcard, ObsiCardSettings, GenerationMode } from '../types';
 import { TokenUtils } from '../utils/TokenUtils';
 import { Validator } from './Validator';
 

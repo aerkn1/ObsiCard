@@ -10,6 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Future features will be listed here
 
+## [1.1.1] - 2025-01-XX
+
+### Fixed
+- Fixed console.log statements to use console.debug (Obsidian compliance)
+- Fixed sentence case for UI text throughout the plugin
+- Fixed async method without await expression
+- Fixed Promise returned in function argument where void return was expected
+- Removed unused variables (ankiSyncCount, ankiQueuedCount, GroqResponse, deckNameLabel)
+
 ## [1.1.0] - 2025-11-05
 
 ### Changed
@@ -183,7 +192,8 @@ This is the initial stable release of ObsiCard.
 
 ---
 
-[Unreleased]: https://github.com/aerkn1/ObsiCard/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/aerkn1/ObsiCard/compare/1.1.1...HEAD
+[1.1.1]: https://github.com/aerkn1/ObsiCard/releases/tag/1.1.1
 [1.1.0]: https://github.com/aerkn1/ObsiCard/releases/tag/1.1.0
 [1.0.0]: https://github.com/aerkn1/ObsiCard/releases/tag/1.0.0
 

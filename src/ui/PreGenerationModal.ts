@@ -33,11 +33,11 @@ export class PreGenerationModal extends Modal {
     // Mode selection
     new Setting(contentEl)
       .setName('Generation mode')
-      .setDesc('Dynamic: AI suggests tags based on content. Fixed: Use your specified tags.')
+      .setDesc('Dynamic: AI suggests tags based on content. Fixed: use your specified tags.')
       .addDropdown(dropdown => {
         dropdown
           .addOption(GenerationMode.DYNAMIC, 'Dynamic (AI-suggested tags)')
-          .addOption(GenerationMode.FIXED, 'Fixed (Use my tags)')
+          .addOption(GenerationMode.FIXED, 'Fixed (use my tags)')
           .setValue(this.mode)
           .onChange(value => {
             this.mode = value as GenerationMode;

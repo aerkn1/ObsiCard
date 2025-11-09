@@ -18,7 +18,7 @@ export default class ObsiCardPlugin extends Plugin {
   private queueProcessInterval?: number;
 
   async onload() {
-    console.log('Loading ObsiCard plugin');
+    console.debug('Loading ObsiCard plugin');
 
     // Load settings
     await this.loadSettings();
@@ -47,11 +47,11 @@ export default class ObsiCardPlugin extends Plugin {
       void this.generateFlashcardsFromActiveNote();
     });
 
-    console.log('ObsiCard plugin loaded successfully');
+    console.debug('ObsiCard plugin loaded successfully');
   }
 
   onunload() {
-    console.log('Unloading ObsiCard plugin');
+    console.debug('Unloading ObsiCard plugin');
     
     // Stop queue processing
     if (this.queueProcessInterval) {
@@ -70,7 +70,7 @@ export default class ObsiCardPlugin extends Plugin {
       editorCallback: (editor) => {
         const selection = editor.getSelection();
         if (selection) {
-          void this.generateFlashcards(selection);
+          this.generateFlashcards(selection);
         } else {
           new Notice('No text selected');
         }
@@ -144,7 +144,7 @@ export default class ObsiCardPlugin extends Plugin {
             .onClick(() => {
               const selection = editor.getSelection();
               if (selection) {
-                void this.generateFlashcards(selection);
+                this.generateFlashcards(selection);
               } else {
                 void this.generateFlashcardsFromActiveNote();
               }
@@ -163,7 +163,7 @@ export default class ObsiCardPlugin extends Plugin {
               .setIcon('brain')
               .onClick(async () => {
                 const content = await this.app.vault.read(file);
-                void this.generateFlashcards(content, file);
+                this.generateFlashcards(content, file);
               });
           });
         }
@@ -195,7 +195,7 @@ export default class ObsiCardPlugin extends Plugin {
       return;
     }
 
-    await this.generateFlashcards(content, file);
+    this.generateFlashcards(content, file);
   }
 
   /**
@@ -203,7 +203,7 @@ export default class ObsiCardPlugin extends Plugin {
    * @param content - Text content to generate from
    * @param file - Optional file to save flashcards to
    */
-  private async generateFlashcards(content: string, file?: TFile): Promise<void> {
+  private generateFlashcards(content: string, file?: TFile): void {
     // Check API key
     if (!this.settings.groqApiKey) {
       new Notice('Please configure your Groq API key in settings');
@@ -214,8 +214,8 @@ export default class ObsiCardPlugin extends Plugin {
     const modal = new PreGenerationModal(
       this.app,
       this.settings.defaultTags,
-      async (mode: GenerationMode, tags: string[]) => {
-        await this.processGeneration(content, mode, tags, file);
+      (mode: GenerationMode, tags: string[]) => {
+        void this.processGeneration(content, mode, tags, file);
       }
     );
     modal.open();
@@ -257,8 +257,8 @@ export default class ObsiCardPlugin extends Plugin {
       const reviewModal = new ReviewModal(
         this.app,
         flashcards,
-        async (approved: Flashcard[], deckName: string) => {
-          await this.saveAndSyncFlashcards(approved, file, deckName);
+        (approved: Flashcard[], deckName: string) => {
+          void this.saveAndSyncFlashcards(approved, file, deckName);
         },
         this.settings.ankiDeckName
       );
@@ -297,8 +297,6 @@ export default class ObsiCardPlugin extends Plugin {
       }
 
       let noteSaveSuccess = false;
-      let ankiSyncCount = 0;
-      let ankiQueuedCount = 0;
 
       // Save to note
       if (targetFile) {

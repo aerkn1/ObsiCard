@@ -311,7 +311,7 @@ export class ObsiCardSettingsTab extends PluginSettingTab {
     });
 
     list.createEl('li', {
-      text: '3. Select text or open a note, then right-click → "Generate Flashcards"'
+      text: '3. Select text or open a note, then right-click → "Generate flashcards"'
     });
 
     const linksDiv = containerEl.createDiv('obsicard-help-links');

@@ -56,7 +56,7 @@ export class ReviewModal extends Modal {
     // Deck name input
     const deckNameContainer = contentEl.createDiv('deck-name-container');
 
-    const deckNameLabel = deckNameContainer.createEl('label', {
+    deckNameContainer.createEl('label', {
       text: 'Anki deck name:',
       cls: 'setting-item-name'
     });
